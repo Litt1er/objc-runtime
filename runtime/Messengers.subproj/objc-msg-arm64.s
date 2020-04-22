@@ -302,15 +302,22 @@ _objc_debug_taggedpointer_ext_classes:
 	ENTRY _objc_msgSend
 	UNWIND _objc_msgSend, NoFrame
 
+// 先比较第一个参数p0 是不是为空，oc是允许向nil发消息的 (p0为什么是第一个参数self？ 不应该是x0吗)
 	cmp	p0, #0			// nil check and tagged pointer check
+
+// tagged pointer
 #if SUPPORT_TAGGED_POINTERS
 	b.le	LNilOrTagged		//  (MSB tagged pointer looks negative)
 #else
 	b.eq	LReturnZero
 #endif
+
+// x0 存储的是isa指针
 	ldr	p13, [x0]		// p13 = isa
 	GetClassFromIsa_p16 p13		// p16 = class
 LGetIsaDone:
+
+// 查找缓存
 	CacheLookup NORMAL		// calls imp or objc_msgSend_uncached
 
 #if SUPPORT_TAGGED_POINTERS

@@ -4765,6 +4765,7 @@ getMethod_nolock(Class cls, SEL sel)
 
     assert(cls->isRealized());
 
+    // 递归去找父类的方法
     while (cls  &&  ((m = getMethodNoSuper_nolock(cls, sel))) == nil) {
         cls = cls->superclass;
     }

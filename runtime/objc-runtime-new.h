@@ -830,7 +830,7 @@ struct class_rw_t {
 
     const class_ro_t *ro;
 
-    method_array_t methods;
+    method_array_t methods; 
     property_array_t properties;
     protocol_array_t protocols;
 
